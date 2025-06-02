@@ -56,7 +56,7 @@
                     <li><a class="nav-link scrollto" href="#blogs">Blogs</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
                     {% if user.is_authenticated %}
-                        <li><a class="getstarted scrollto" href="{% url 'chatroom' %}">Chat with MindCare</a></li>
+                        <li><a class="getstarted scrollto" href="{% url 'logout' %}">Logout</a></li>
                     {% else %}
                         <li><a class="getstarted scrollto" href="{% url 'login' %}">Login</a></li>
                     {% endif %}

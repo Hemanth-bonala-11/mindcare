@@ -1,41 +1,99 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Login - MindCare</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-{% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Login</h3>
-                </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+    <!-- Favicons -->
+    <link href="{% static 'img/chatbot.png' %}" rel="icon">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %} " rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top ">
+        <div class="container d-flex align-items-center justify-content-between">
+            <h1 class="logo"><a href="/">MindCare</a></h1>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto" href="{% url 'index' %}#hero">Home</a></li>
+                    <li><a class="nav-link scrollto" href="{% url 'index' %}#services">Features</a></li>
+                    <li><a class="nav-link scrollto" href="{% url 'index' %}#blogs">Blogs</a></li>
+                    <li><a class="nav-link scrollto" href="{% url 'index' %}#about">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a class="getstarted scrollto" href="{% url 'chatroom' %}">Chat with MindCare</a></li>
+                    {% else %}
+                        <li><a class="getstarted scrollto" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <main id="main" style="margin-top: 100px;">
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center">Login</h3>
                         </div>
-                        <div class="form-group mt-3">
-                            <label for="password">Password:</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} mt-3">
-                                    {{ message }}
+                        <div class="card-body">
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="username">Username:</label>
+                                    <input type="text" class="form-control" id="username" name="username" required>
                                 </div>
-                            {% endfor %}
-                        {% endif %}
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                                <div class="form-group mt-3">
+                                    <label for="password">Password:</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                </div>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ message.tags }} mt-3">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                            </form>
+                            <div class="text-center mt-3">
+                                <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+                            </div>
                         </div>
-                    </form>
-                    <div class="text-center mt-3">
-                        <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-{% endblock %} 
+    </main>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html> 
