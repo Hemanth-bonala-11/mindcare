@@ -1,4 +1,4 @@
-FROM python:3.9-slim as builder
+FROM python:3.9-slim
 
 WORKDIR /app
 
@@ -16,46 +16,16 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Copy requirements first for better cache utilization
+# Copy requirements and install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir rasa django gunicorn
 
-# Copy the rest of the application
+# Copy the application
 COPY . .
 
-# Train the model
+# Train the Rasa model
 RUN rasa train
-
-# Final stage
-FROM python:3.9-slim
-
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends \
-    curl \
-    python3-venv \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create and activate virtual environment
-ENV VIRTUAL_ENV=/opt/venv
-RUN python -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# Copy virtual environment from builder
-COPY --from=builder /opt/venv /opt/venv
-
-# Copy only necessary files from builder
-COPY --from=builder /app/models /app/models
-COPY --from=builder /app/actions /app/actions
-COPY --from=builder /app/data /app/data
-COPY --from=builder /app/domain.yml /app/domain.yml
-COPY --from=builder /app/config.yml /app/config.yml
-COPY --from=builder /app/endpoints.yml /app/endpoints.yml
-COPY --from=builder /app/credentials.yml /app/credentials.yml
-COPY --from=builder /app/psykh_web /app/psykh_web
 
 # Set environment variables
 ENV PORT=8000
@@ -66,7 +36,7 @@ ENV RASA_MODEL_PATH=/app/models
 ENV RASA_ACTIONS_URL=http://localhost:5005
 ENV RASA_CORS_ORIGINS=*
 
-# Expose the ports
+# Expose ports
 EXPOSE 8000
 EXPOSE 5005
 
