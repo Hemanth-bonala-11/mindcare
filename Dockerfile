@@ -47,7 +47,7 @@ ENV RASA_ACTIONS_PORT=5055
 ENV PYTHONPATH=/app
 ENV RASA_TELEMETRY_ENABLED=false
 ENV RASA_MODEL_PATH=/app/models
-ENV RASA_ACTIONS_URL=http://localhost:5055
+ENV RASA_ACTIONS_URL=https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io:5055
 ENV RASA_CORS_ORIGINS=*
 
 # Create volume for models
@@ -56,7 +56,7 @@ VOLUME ["/app/models"]
 # Expose ports
 EXPOSE 8000
 EXPOSE 5005
-EXPOSE 5005
+EXPOSE 5055
 
 # Use tini to manage processes
 ENTRYPOINT ["/usr/bin/tini", "--"]

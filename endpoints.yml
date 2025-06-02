@@ -11,7 +11,7 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 action_endpoint:
-  url: "https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io/webhook"
+  url: "https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io:5055"
 
 # Tracker store which is used to store the conversations.
 # By default the conversations are stored in memory.
