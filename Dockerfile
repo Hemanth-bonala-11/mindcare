@@ -39,20 +39,28 @@ COPY --from=builder /app/domain.yml /app/domain.yml
 COPY --from=builder /app/config.yml /app/config.yml
 COPY --from=builder /app/endpoints.yml /app/endpoints.yml
 COPY --from=builder /app/credentials.yml /app/credentials.yml
+COPY --from=builder /app/psykh_web /app/psykh_web
 COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
 
 # Set environment variables
-ENV PORT=8080
+ENV PORT=8000
+ENV RASA_PORT=5005
 ENV PYTHONPATH=/app
 
-# Expose the port
-EXPOSE 8080
+# Expose the ports
+EXPOSE 8000
+EXPOSE 5005
 
 # Create start script
 RUN echo '#!/bin/bash\n\
-rasa run --enable-api --cors "*" --port $PORT --credentials credentials.yml & \
-rasa run actions --cors "*" --port 5005\n\
+# Start Rasa server in background\n\
+rasa run --enable-api --cors "*" --port $RASA_PORT --credentials credentials.yml & \n\
+rasa run actions --cors "*" --port 5055 & \n\
+\n\
+# Start Django with gunicorn\n\
+cd psykh_web && \
+gunicorn psykh_web.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120\n\
 wait' > /app/start.sh && chmod +x /app/start.sh
 
-# Start both Rasa server and action server
+# Start both servers
 CMD ["/app/start.sh"] 
