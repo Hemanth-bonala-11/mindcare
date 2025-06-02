@@ -29,7 +29,12 @@ WORKDIR /app
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
     curl \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy only necessary files from builder
 COPY --from=builder /app/models /app/models
