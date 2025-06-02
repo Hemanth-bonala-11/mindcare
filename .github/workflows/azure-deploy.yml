@@ -8,10 +8,17 @@ on:
     - '.github/workflows/rasa-chatbot-deploy.yml'
   workflow_dispatch:      
 
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: Production
+    permissions: 
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout to the branch
