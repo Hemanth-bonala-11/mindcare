@@ -55,9 +55,11 @@
                     <li><a class="nav-link scrollto" href="#services">Features</a></li>
                     <li><a class="nav-link scrollto" href="#blogs">Blogs</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
-
-
-                    <li><a class="getstarted scrollto" href="/chatroom">Chat with MindCare</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a class="getstarted scrollto" href="{% url 'chatroom' %}">Chat with MindCare</a></li>
+                    {% else %}
+                        <li><a class="getstarted scrollto" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav>
@@ -75,7 +77,11 @@
                 <div class="col-xl-5 col-lg-6 pt-3 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
                     <h1>MindCare</h1>
                     <h2>Mental Health Chatbot</h2>
-                    <div><a href="/chatroom" class="btn-get-started scrollto">Chat with MindCare</a></div>
+                    {% if user.is_authenticated %}
+                        <div><a href="{% url 'chatroom' %}" class="btn-get-started scrollto">Chat with MindCare</a></div>
+                    {% else %}
+                        <div><a href="{% url 'login' %}" class="btn-get-started scrollto">Login to Chat</a></div>
+                    {% endif %}
                 </div>
                 <div class="col-xl-4 col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="150">
                     <img src="{% static 'img/chatbot.png' %}" class="img-fluid animated" alt="">

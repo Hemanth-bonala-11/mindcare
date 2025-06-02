@@ -126,6 +126,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS= ( os.path.join(BASE_DIR, 'my_app/assets'),)
    
 
+# Authentication settings
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'
+
 
    
 

@@ -19,6 +19,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # Copy requirements first for better cache utilization
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir rasa django gunicorn
 
 # Copy the rest of the application
 COPY . .
@@ -69,28 +70,8 @@ ENV RASA_CORS_ORIGINS=*
 EXPOSE 8000
 EXPOSE 5005
 
-# Create start script
-RUN echo '#!/bin/bash\n\
-set -e\n\
-\n\
-echo "Activating virtual environment..."\n\
-source /opt/venv/bin/activate || { echo "Failed to activate virtual environment"; exit 1; }\n\
-\n\
-echo "Python version and path:"\n\
-which python\n\
-python --version\n\
-\n\
-echo "Starting Rasa server..."\n\
-rasa run --enable-api --cors "*" --port $RASA_PORT --credentials credentials.yml & \n\
-echo "Starting Rasa actions server..."\n\
-rasa run actions --cors "*" --port 5005 & \n\
-\n\
-echo "Starting Django with gunicorn..."\n\
-cd psykh_web\n\
-echo "Current directory: $(pwd)"\n\
-echo "Starting gunicorn..."\n\
-exec gunicorn psykh_web.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120 --log-level debug\n\
-' > /app/start.sh && chmod +x /app/start.sh
-
-# Start both servers
-CMD ["/bin/bash", "/app/start.sh"] 
+# Start both servers directly with CMD
+CMD rasa run --enable-api --cors "*" --port ${RASA_PORT} --credentials credentials.yml & \
+    rasa run actions --cors "*" --port 5005 & \
+    cd psykh_web && \
+    gunicorn psykh_web.wsgi:application --bind 0.0.0.0:${PORT} --workers 3 --timeout 120 --log-level debug 
