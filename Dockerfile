@@ -26,11 +26,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Optional: install explicitly if not in requirements.txt
 RUN pip install --no-cache-dir rasa django gunicorn
 
+# Create models directory
+RUN mkdir -p /app/models
+
 # Copy the rest of the application
 COPY . .
 
-# Train the Rasa model
-RUN rasa train
+# Train initial Rasa model during build
+RUN rasa train --debug --fixed-model-name latest && \
+    ls -la /app/models/latest.tar.gz || echo "Warning: Model file not found!"
 
 # Copy entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh
@@ -45,6 +49,9 @@ ENV RASA_TELEMETRY_ENABLED=false
 ENV RASA_MODEL_PATH=/app/models
 ENV RASA_ACTIONS_URL=http://localhost:5005
 ENV RASA_CORS_ORIGINS=*
+
+# Create volume for models
+VOLUME ["/app/models"]
 
 # Expose ports
 EXPOSE 8000
