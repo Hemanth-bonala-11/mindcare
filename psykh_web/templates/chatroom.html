@@ -114,51 +114,47 @@
 </head>
 
 <body>
-    {% if not user.is_authenticated %}
-        <script>window.location.href = "{% url 'login' %}";</script>
-    {% else %}
-        <!-- Add navigation bar -->
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0F256E;">
-            <div class="container">
-                <a class="navbar-brand" href="{% url 'index' %}">MindCare</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'index' %}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                        </li>
-                    </ul>
-                </div>
+    <!-- Add navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0F256E;">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">MindCare</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <!-- Chatroom content -->
-        <img class='bot' src="{% static 'img/bot.png' %}" align='left'>
-        <img class='human' src="{% static 'img/human.png' %}" align='right'>
-        <div class="chat-container"></div>
+    <!-- Chatroom content -->
+    <img class='bot' src="{% static 'img/bot.png' %}" align='left'>
+    <img class='human' src="{% static 'img/human.png' %}" align='right'>
+    <div class="chat-container"></div>
 
-        <!-- Load the Chatroom script -->
-        <script src="https://cdn.jsdelivr.net/npm/@scalableminds/chatroom@0.12.0/dist/Chatroom.js"></script>
-        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-        <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
-                const chatroom = new window.Chatroom({
-                    host: "https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io",
-                    title: "Chat with MindCare",
-                    container: document.querySelector(".chat-container"),
-                    welcomeMessage: "Hi, I am MindCare. How may I help you?",
-                    speechRecognition: "en-US",
-                    voiceLang: "en-US"
-                });
-                chatroom.openChat();
+    <!-- Load the Chatroom script -->
+    <script src="https://cdn.jsdelivr.net/npm/@scalableminds/chatroom@0.12.0/dist/Chatroom.js"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatroom = new window.Chatroom({
+                host: "https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io",
+                title: "Chat with MindCare",
+                container: document.querySelector(".chat-container"),
+                welcomeMessage: "Hi, I am MindCare. How may I help you?",
+                speechRecognition: "en-US",
+                voiceLang: "en-US"
             });
-        </script>
-    {% endif %}
+            chatroom.openChat();
+        });
+    </script>
 </body>
 
 </html>

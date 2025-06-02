@@ -43,11 +43,11 @@ RUN chmod +x /app/entrypoint.sh
 # Environment variables
 ENV PORT=8000
 ENV RASA_PORT=5005
-ENV RASA_ACTIONS_PORT=5005
+ENV RASA_ACTIONS_PORT=5055
 ENV PYTHONPATH=/app
 ENV RASA_TELEMETRY_ENABLED=false
 ENV RASA_MODEL_PATH=/app/models
-ENV RASA_ACTIONS_URL=http://localhost:5005
+ENV RASA_ACTIONS_URL=http://localhost:5055
 ENV RASA_CORS_ORIGINS=*
 
 # Create volume for models

@@ -13,6 +13,10 @@ def chatroom(request):
     return render(request, 'chatroom.html')
 
 def signup_view(request):
+    # Redirect authenticated users to index
+    if request.user.is_authenticated:
+        return redirect('index')
+        
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -26,6 +30,10 @@ def signup_view(request):
     return render(request, 'signup.html')
 
 def login_view(request):
+    # Redirect authenticated users to index
+    if request.user.is_authenticated:
+        return redirect('index')
+        
     # Clear any existing messages
     storage = messages.get_messages(request)
     storage.used = True
