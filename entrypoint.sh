@@ -12,6 +12,16 @@ echo "Virtual env: $VIRTUAL_ENV"
 # Set Django settings module explicitly
 export DJANGO_SETTINGS_MODULE=psykh_web.settings
 
+# Create models directory if it doesn't exist
+mkdir -p /app/models
+
+# Train Rasa model
+echo "Training Rasa model..."
+rasa train --debug --fixed-model-name latest || {
+    echo "Rasa training failed!"
+    exit 1
+}
+
 # Start Rasa server (port 5005)
 echo "Starting Rasa server..."
 rasa run \
@@ -21,9 +31,8 @@ rasa run \
   --credentials credentials.yml \
   --endpoints endpoints.yml \
   --debug \
-  --enable-api \
   --log-file rasa.log \
-  --model models &
+  --model models/latest.tar.gz &
 
 # Start Rasa Actions server (port 5005)
 echo "Starting Rasa Actions server..."
@@ -34,6 +43,7 @@ rasa run actions \
   --log-file actions.log &
 
 # Wait for Rasa servers to start
+echo "Waiting for Rasa servers to start..."
 sleep 10
 
 # Start Django app with Gunicorn (port 8000)
