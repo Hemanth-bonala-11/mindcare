@@ -33,14 +33,15 @@ ENV RASA_PORT=5005
 ENV PYTHONPATH=/app
 ENV RASA_TELEMETRY_ENABLED=false
 ENV RASA_MODEL_PATH=/app/models
-ENV RASA_ACTIONS_URL=http://localhost:5055
+ENV RASA_ACTIONS_URL=http://localhost:5005
 ENV RASA_CORS_ORIGINS=*
 
 # Expose ports
 EXPOSE 8000
 EXPOSE 5005
 
-# Start services
+# Start both servers directly with CMD
 CMD rasa run --enable-api --cors "*" --port ${RASA_PORT} --credentials credentials.yml & \
-    rasa run actions --cors "*" --port 5055 & \
-    cd psykh_web && gunicorn --bind 0.0.0.0:${PORT} psykh_web.wsgi:application --workers 3 --timeout 120 --log-level debug 
+    rasa run actions --cors "*" --port 5005 & \
+    cd psykh_web && \
+    gunicorn psykh_web.wsgi:application --bind 0.0.0.0:${PORT} --workers 3 --timeout 120 --log-level debug 
