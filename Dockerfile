@@ -60,6 +60,10 @@ COPY --from=builder /app/psykh_web /app/psykh_web
 ENV PORT=8000
 ENV RASA_PORT=5005
 ENV PYTHONPATH=/app
+ENV RASA_TELEMETRY_ENABLED=false
+ENV RASA_MODEL_PATH=/app/models
+ENV RASA_ACTIONS_URL=http://localhost:5005
+ENV RASA_CORS_ORIGINS=*
 
 # Expose the ports
 EXPOSE 8000
@@ -76,8 +80,8 @@ rasa run actions --cors "*" --port 5055 & \n\
 \n\
 # Start Django with gunicorn\n\
 cd psykh_web && \
-gunicorn psykh_web.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120\n\
-wait' > /app/start.sh && chmod +x /app/start.sh
+exec gunicorn psykh_web.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120\n\
+' > /app/start.sh && chmod +x /app/start.sh
 
 # Start both servers
 CMD ["/bin/bash", "/app/start.sh"] 
