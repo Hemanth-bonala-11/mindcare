@@ -138,12 +138,27 @@
     <img class='bot' src="{% static 'img/bot.png' %}" align='left'>
     <img class='human' src="{% static 'img/human.png' %}" align='right'>
     <div class="chat-container"></div>
+    {% csrf_token %}
 
     <!-- Load the Chatroom script -->
     <script src="https://cdn.jsdelivr.net/npm/@scalableminds/chatroom@0.12.0/dist/Chatroom.js"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {
+            // Get CSRF token
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Configure headers for all fetch requests
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options = {}) {
+                options.credentials = 'include';
+                options.headers = {
+                    ...options.headers,
+                    'X-CSRFToken': csrfToken,
+                };
+                return originalFetch(url, options);
+            };
+
             const chatroom = new window.Chatroom({
                 host: "https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io",
                 title: "Chat with MindCare",

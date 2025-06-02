@@ -63,7 +63,12 @@ gunicorn psykh_web.wsgi:application \
   --access-logfile - \
   --error-logfile - \
   --capture-output \
-  --enable-stdio-inheritance
+  --enable-stdio-inheritance \
+  --forwarded-allow-ips="*" \
+  --proxy-protocol \
+  --proxy-allow-from="*" \
+  --graceful-timeout 300 \
+  --worker-tmp-dir /dev/shm
 
 # Wait for all background processes
 wait
