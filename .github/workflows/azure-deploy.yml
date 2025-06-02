@@ -15,10 +15,6 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: Production
-    permissions: 
-      id-token: write
-      contents: read
 
     steps:
       - name: Checkout to the branch
@@ -39,9 +35,9 @@ jobs:
           registryUrl: ${{ secrets.REGISTRY_URL }}
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
-          containerAppName: psykh-chatbot
-          resourceGroup: ${{ secrets.RESOURCE_GROUP }}
-          imageToBuild: ${{ secrets.REGISTRY_URL }}/psykh-chatbot:${{ github.sha }}
+          containerAppName: mindcare-chatbot
+          resourceGroup: YOUR_RESOURCE_GROUP
+          imageToBuild: ${{ secrets.REGISTRY_URL }}/mindcare-chatbot:${{ github.sha }}
           targetPort: 8080
           ingress: external
           environmentVariables: |
