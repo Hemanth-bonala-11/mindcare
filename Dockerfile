@@ -18,14 +18,15 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir rasa django gunicorn
+RUN . /opt/venv/bin/activate && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir rasa django gunicorn
 
 # Copy the application
 COPY . .
 
 # Train the Rasa model
-RUN rasa train
+RUN . /opt/venv/bin/activate && rasa train
 
 # Set environment variables
 ENV PORT=8000
@@ -41,7 +42,8 @@ EXPOSE 8000
 EXPOSE 5005
 
 # Start both servers directly with CMD
-CMD rasa run --enable-api --cors "*" --port ${RASA_PORT} --credentials credentials.yml & \
+CMD . /opt/venv/bin/activate && \
+    rasa run --enable-api --cors "*" --port ${RASA_PORT} --credentials credentials.yml & \
     rasa run actions --cors "*" --port 5005 & \
     cd psykh_web && \
     gunicorn psykh_web.wsgi:application --bind 0.0.0.0:${PORT} --workers 3 --timeout 120 --log-level debug 
