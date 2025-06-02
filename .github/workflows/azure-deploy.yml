@@ -8,9 +8,6 @@ on:
     - '.github/workflows/rasa-chatbot-deploy.yml'
   workflow_dispatch:      
 
-permissions:
-  id-token: write
-  contents: read
 
 jobs:
   build-and-deploy:
