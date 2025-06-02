@@ -44,4 +44,4 @@ jobs:
           imageToBuild: ${{ secrets.REGISTRY_URL }}/mindcare-chatbot:${{ github.sha }}
           targetPort: 8000
           ingress: external
-          environmentVariables: "PORT=8000 RASA_TELEMETRY_ENABLED=false RASA_MODEL_PATH=/app/models RASA_ACTIONS_URL=http://localhost:5005 PYTHONPATH=/app RASA_CORS_ORIGINS=* "
+          environmentVariables: "PORT=8000 RASA_TELEMETRY_ENABLED=false RASA_MODEL_PATH=/app/models RASA_ACTIONS_URL=https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io/webhooks/actions PYTHONPATH=/app RASA_CORS_ORIGINS=* "

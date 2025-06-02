@@ -27,18 +27,18 @@ echo "Starting Rasa server..."
 rasa run \
   --enable-api \
   --cors "*" \
-  --port ${RASA_PORT} \
+  --port ${RASA_PORT:-5005} \
   --credentials credentials.yml \
   --endpoints endpoints.yml \
   --debug \
   --log-file rasa.log \
   --model models/latest.tar.gz &
 
-# Start Rasa Actions server (port 5005)
+# Start Rasa Actions server (port 5055)
 echo "Starting Rasa Actions server..."
 rasa run actions \
   --cors "*" \
-  --port ${RASA_ACTIONS_PORT} \
+  --port ${RASA_ACTIONS_PORT:-5055} \
   --debug \
   --log-file actions.log &
 
@@ -50,7 +50,7 @@ sleep 10
 cd psykh_web
 echo "Starting Django with settings module: $DJANGO_SETTINGS_MODULE"
 gunicorn psykh_web.wsgi:application \
-  --bind 0.0.0.0:${PORT} \
+  --bind 0.0.0.0:${PORT:-8000} \
   --workers 4 \
   --threads 2 \
   --worker-class gthread \
