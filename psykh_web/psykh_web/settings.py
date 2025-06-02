@@ -33,6 +33,19 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
 ]
 
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    'https://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io',
+    'http://mindcare-bot.nicebay-5c30314d.westus2.azurecontainerapps.io'
+]
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_USE_SESSIONS = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
