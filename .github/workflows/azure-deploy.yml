@@ -40,7 +40,7 @@ jobs:
           registryUrl: ${{ secrets.REGISTRY_URL }}
           registryUsername: ${{ secrets.REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
-          containerAppName: mindcare-chatbot
+          containerAppName: mindcare-bot
           imageToBuild: ${{ secrets.REGISTRY_URL }}/mindcare-chatbot:${{ github.sha }}
           targetPort: 8080
           ingress: external
