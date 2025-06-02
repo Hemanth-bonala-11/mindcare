@@ -71,16 +71,25 @@ EXPOSE 5005
 
 # Create start script
 RUN echo '#!/bin/bash\n\
-# Activate virtual environment\n\
-source /opt/venv/bin/activate\n\
+set -e\n\
 \n\
-# Start Rasa server in background\n\
+echo "Activating virtual environment..."\n\
+source /opt/venv/bin/activate || { echo "Failed to activate virtual environment"; exit 1; }\n\
+\n\
+echo "Python version and path:"\n\
+which python\n\
+python --version\n\
+\n\
+echo "Starting Rasa server..."\n\
 rasa run --enable-api --cors "*" --port $RASA_PORT --credentials credentials.yml & \n\
-rasa run actions --cors "*" --port 5055 & \n\
+echo "Starting Rasa actions server..."\n\
+rasa run actions --cors "*" --port 5005 & \n\
 \n\
-# Start Django with gunicorn\n\
-cd psykh_web && \
-exec gunicorn psykh_web.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120\n\
+echo "Starting Django with gunicorn..."\n\
+cd psykh_web\n\
+echo "Current directory: $(pwd)"\n\
+echo "Starting gunicorn..."\n\
+exec gunicorn psykh_web.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120 --log-level debug\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
 # Start both servers
